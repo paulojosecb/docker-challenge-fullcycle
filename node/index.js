@@ -14,8 +14,15 @@ const connection = mysql.createConnection(config);
 
 const app = express();
 
-const sql = `INSERT INTO people(name) values('Paulo José')`;
-connection.query(sql);
+connection.query(
+  "create table people(id int not null auto_increment, name varchar(255), primary key(id))",
+  (err, result, field) => {
+    if (err == null) {
+      const sql = `INSERT INTO people(name) values('Paulo José')`;
+      connection.query(sql);
+    }
+  }
+);
 
 app.get("/", (req, res) => {
   connection.query("select * from people", (err, result, fields) => {
